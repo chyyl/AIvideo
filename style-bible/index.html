@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画风圣经 · 一致性设定页 v0.1</title>
+<style>
+  :root{
+    --ink:#0a0c0b;
+    --ink2:#111513;
+    --panel:rgba(255,255,255,.028);
+    --gold:#c9a35b;
+    --gold-dim:#8d7642;
+    --text:#e9e3d5;
+    --muted:#8e968f;
+    --line:rgba(201,163,91,.20);
+    --line-soft:rgba(255,255,255,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1100px 600px at 15% -8%, rgba(201,163,91,.10), transparent 60%),
+      radial-gradient(900px 500px at 90% 0%, rgba(70,120,110,.10), transparent 60%),
+      var(--ink);
+    color:var(--text);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.7;
+  }
+  .serif{font-family:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,serif;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px;}
+
+  header.hero{padding:64px 0 34px;border-bottom:1px solid var(--line-soft);}
+  .eyebrow{font-size:11px;letter-spacing:.42em;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+  h1{font-size:clamp(30px,4.6vw,54px);line-height:1.18;margin:0 0 14px;font-weight:600;letter-spacing:.04em;}
+  h1 small{display:block;font-size:13px;letter-spacing:.3em;color:var(--muted);font-weight:400;margin-top:14px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;}
+  .chip{font-size:12px;padding:5px 12px;border:1px solid var(--line);border-radius:99px;color:var(--gold);background:rgba(201,163,91,.06);letter-spacing:.06em;}
+  .chip.plain{color:var(--muted);border-color:var(--line-soft);background:transparent;}
+
+  .progress-row{display:flex;align-items:center;gap:16px;margin-top:28px;flex-wrap:wrap;}
+  .bar{flex:1;min-width:220px;height:4px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-dim),var(--gold));transition:width .4s ease;}
+  .progress-txt{font-size:12px;color:var(--muted);letter-spacing:.08em;}
+  .progress-txt b{color:var(--gold);font-weight:600;}
+
+  .toolbar{
+    position:sticky;top:0;z-index:30;
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    padding:14px 0;margin-top:6px;
+    background:linear-gradient(180deg,rgba(10,12,11,.96) 70%,rgba(10,12,11,.72));
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .filter{font:inherit;font-size:12.5px;padding:6px 14px;border-radius:99px;cursor:pointer;background:transparent;border:1px solid var(--line-soft);color:var(--muted);transition:.2s;letter-spacing:.06em;}
+  .filter:hover{color:var(--text);border-color:var(--line);}
+  .filter.on{color:var(--ink);background:var(--gold);border-color:var(--gold);font-weight:600;}
+  .spacer{flex:1;}
+  .btn{font:inherit;font-size:12.5px;padding:7px 15px;border-radius:8px;cursor:pointer;letter-spacing:.06em;background:transparent;color:var(--gold);border:1px solid var(--line);transition:.2s;}
+  .btn:hover{background:rgba(201,163,91,.12);}
+  .btn.ghost{color:var(--muted);border-color:var(--line-soft);}
+  .btn.ghost:hover{color:var(--text);}
+
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:34px 0 8px;}
+  .rule{border:1px solid var(--line-soft);border-radius:12px;padding:18px 20px;background:var(--panel);}
+  .rule h4{margin:0 0 10px;font-size:12px;letter-spacing:.24em;color:var(--gold);font-weight:600;}
+  .rule ol,.rule ul{margin:0;padding-left:18px;font-size:13px;color:var(--muted);}
+  .rule li{margin:4px 0;}
+  .rule li b{color:var(--text);font-weight:500;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:22px;margin:30px 0 70px;}
+  .card{border:1px solid var(--line-soft);border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.032),rgba(255,255,255,.012));transition:border-color .25s,transform .25s;}
+  .card:hover{border-color:var(--line);transform:translateY(-2px);}
+  .card.hide{display:none;}
+  .card-body{padding:18px 20px 22px;}
+  .card-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .code{font-size:11px;letter-spacing:.16em;color:var(--gold);font-family:ui-monospace,Menlo,monospace;}
+  .badge{font-size:10.5px;padding:2px 8px;border-radius:99px;border:1px solid var(--line-soft);color:var(--muted);letter-spacing:.1em;}
+  .badge.style{color:#d9c08a;border-color:rgba(201,163,91,.45);}
+  .badge.scene{color:#8fbfb2;border-color:rgba(110,180,160,.35);}
+  .badge.char{color:#d8a7a0;border-color:rgba(210,150,140,.35);}
+  .badge.prop{color:#b3b8d4;border-color:rgba(150,160,210,.35);}
+  .state{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.14);margin-left:auto;transition:.3s;}
+  .state.ok{background:#5fbf8a;box-shadow:0 0 10px rgba(95,191,138,.6);}
+  .card h3{margin:0 0 2px;font-size:19px;font-weight:600;letter-spacing:.03em;}
+  .card h3 em{font-style:normal;font-size:11.5px;color:var(--muted);letter-spacing:.12em;margin-left:8px;}
+  .sub{font-size:11.5px;color:var(--gold-dim);letter-spacing:.12em;margin-bottom:14px;}
+
+  .slot{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:1px dashed rgba(201,163,91,.38);background:repeating-linear-gradient(45deg,rgba(255,255,255,.014) 0 12px,transparent 12px 24px),#0d100f;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.22s;}
+  .slot:hover,.slot.over{border-color:var(--gold);background-color:#111514;}
+  .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+  .slot.has img{display:block;}
+  .slot .ph{text-align:center;font-size:12.5px;color:var(--muted);letter-spacing:.08em;pointer-events:none;}
+  .slot .ph small{display:block;margin-top:6px;font-size:10.5px;color:rgba(142,150,143,.65);letter-spacing:.06em;}
+  .slot.has .ph{display:none;}
+  .slot .acts{position:absolute;right:8px;bottom:8px;display:none;gap:6px;}
+  .slot.has .acts{display:flex;}
+  .slot .acts button{font:inherit;font-size:11px;padding:4px 9px;border-radius:6px;cursor:pointer;background:rgba(10,12,11,.82);color:var(--text);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(4px);}
+  .slot .acts button:hover{border-color:var(--gold);color:var(--gold);}
+
+  ul.notes{list-style:none;margin:16px 0 0;padding:0;font-size:12.8px;color:var(--muted);}
+  ul.notes li{position:relative;padding-left:13px;margin:3px 0;}
+  ul.notes li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:1px;background:var(--gold-dim);}
+  ul.notes li b{color:#cfc8b6;font-weight:500;}
+
+  .prompt-box{margin-top:16px;border:1px solid var(--line-soft);border-radius:10px;background:rgba(0,0,0,.28);overflow:hidden;}
+  .prompt-label{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.22em;color:var(--gold-dim);padding:9px 12px;border-bottom:1px solid var(--line-soft);}
+  .prompt-label .copy{margin-left:auto;font:inherit;font-size:10.5px;letter-spacing:.1em;cursor:pointer;background:transparent;border:1px solid var(--line-soft);color:var(--muted);padding:3px 9px;border-radius:5px;transition:.2s;}
+  .prompt-label .copy:hover{color:var(--gold);border-color:var(--line);}
+  .prompt-label .copy.done{color:#5fbf8a;border-color:rgba(95,191,138,.4);}
+  .prompt{margin:0;padding:12px 13px;font-family:ui-monospace,"SFMono-Regular",Menlo,monospace;font-size:12px;line-height:1.75;color:#cfd6cf;white-space:pre-wrap;word-break:break-word;}
+  details.neg{margin-top:8px;}
+  details.neg summary{cursor:pointer;font-size:10.5px;letter-spacing:.16em;color:var(--muted);list-style:none;padding:4px 0;}
+  details.neg summary::-webkit-details-marker{display:none;}
+  details.neg summary::before{content:"+ ";color:var(--gold-dim);}
+  details.neg[open] summary::before{content:"− ";}
+  details.neg p{margin:6px 0 0;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:rgba(142,150,143,.9);line-height:1.7;white-space:pre-wrap;}
+  .file{margin-top:12px;font-size:10.5px;letter-spacing:.08em;color:rgba(142,150,143,.75);font-family:ui-monospace,Menlo,monospace;border-top:1px dashed var(--line-soft);padding-top:10px;}
+  .file b{color:var(--gold-dim);font-weight:400;}
+
+  footer{padding:34px 0 70px;border-top:1px solid var(--line-soft);color:var(--muted);font-size:12.5px;}
+  footer h5{margin:0 0 12px;font-size:11px;letter-spacing:.26em;color:var(--gold);font-weight:600;}
+  footer ol{padding-left:18px;margin:0;}
+  footer li{margin:5px 0;}
+  footer code{color:#cfd6cf;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;}
+
+  #toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,20px);background:rgba(18,22,20,.96);border:1px solid var(--line);color:var(--text);padding:10px 18px;border-radius:8px;font-size:12.5px;letter-spacing:.06em;opacity:0;pointer-events:none;transition:.3s;z-index:80;backdrop-filter:blur(8px);}
+  #toast.show{opacity:1;transform:translate(-50%,0);}
+
+  @media (max-width:640px){
+    .wrap{padding:0 16px;}
+    .grid{grid-template-columns:1fr;}
+    .toolbar{position:static;}
+  }
+  @media print{
+    body{background:#fff;color:#111;}
+    .toolbar,footer,.progress-row,#toast{display:none;}
+    .card{border-color:#ddd;background:#fff;break-inside:avoid;}
+    .prompt{color:#333;}
+    .slot{border-color:#bbb;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Consistency Bible · Style Reference</div>
+    <h1 class="serif">画风圣经<small>AI VIDEO PROMPT WORKFLOW / 一致性设定页 v0.1</small></h1>
+    <div class="chips">
+      <span class="chip">画风 A1 电影感写实</span>
+      <span class="chip">+ D4 东方仙侠</span>
+      <span class="chip">画幅 R1 16:9 · 1920×1080</span>
+      <span class="chip plain">内容随机取样 · 只为锁画风</span>
+    </div>
+    <div class="progress-row">
+      <div class="bar"><i id="barFill"></i></div>
+      <span class="progress-txt"><b id="doneNum">0</b> / <span id="totalNum">0</span> 参考图已就位</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <button class="filter on" data-filter="all">全部</button>
+    <button class="filter" data-filter="style">风格锚</button>
+    <button class="filter" data-filter="scene">风景</button>
+    <button class="filter" data-filter="char">角色外貌</button>
+    <button class="filter" data-filter="prop">道具</button>
+    <div class="spacer"></div>
+    <button class="btn" id="exportMd">导出全部提示词 .md</button>
+    <button class="btn ghost" id="clearAll">清空图片</button>
+  </div>
+
+  <section class="rules">
+    <div class="rule">
+      <h4>规则 A · 风格锚定</h4>
+      <ul>
+        <li>每条提示词末尾固定追加风格后缀（见 STYLE-00）</li>
+        <li>禁止再写 <b>anime / 3d render / illustration / cartoon</b></li>
+        <li>画质词统一：<b>35mm anamorphic · subtle film grain</b></li>
+        <li>不论内容多随机，后缀一字不改</li>
+      </ul>
+    </div>
+    <div class="rule">
+      <h4>规则 B · 光线四档</h4>
+      <ul>
+        <li><b>L1</b> 晨雾玉青 5500K 逆光丁达尔</li>
+        <li><b>L2</b> 正午琥珀 4300K 硬光短影</li>
+        <li><b>L3</b> 黄昏金红 3200K 长投影</li>
+        <li><b>L4</b> 夜蓝烛火 2800K 局部暖光</li>
+        <li>换光不换画风，四档互相可衔接</li>
+      </ul>
+    </div>
+    <div class="rule">
+      <h4>规则 C · 取景与镜头</h4>
+      <ul>
+        <li>统一 <b>16:9</b>，主体不压边，留 5% 安全区</li>
+        <li>焦段只用 <b>28mm / 50mm / 85mm</b> 三档</li>
+        <li>透视统一：低机位仰拍山势，平视拍人</li>
+        <li>空气层必须有：雾、尘、雨或雪之一</li>
+      </ul>
+    </div>
+    <div class="rule">
+      <h4>规则 D · 负面清单</h4>
+      <ul>
+        <li>卡通 / 二次元 / 3D渲染感 / 塑料皮肤</li>
+        <li>霓虹过饱和 / 现代服装 / 现代建筑</li>
+        <li>文字、水印、品牌标</li>
+        <li>多手多指、面部过度磨皮、HDR</li>
+      </ul>
+    </div>
+  </section>
+
+  <main class="grid" id="grid"></main>
+
+  <footer>
+    <div class="wrap" style="padding:0;">
+      <h5>使用方式</h5>
+      <ol>
+        <li>用你的 AI 按卡片里的英文提示词出图，比例选 <code>16:9 / 1920×1080</code>。</li>
+        <li>把图片拖到对应卡片的虚线框里（或点击选择文件），会自动压缩并保存在本浏览器。</li>
+        <li>卡片右上角圆点变绿即表示该条目已就位，顶部进度条同步。</li>
+        <li>原始图片建议按卡片底部的文件名另存一份到 <code>images/</code>，便于版本管理。</li>
+        <li>点「导出全部提示词」可下载含全部卡片内容的 <code>.md</code> 清单。</li>
+      </ol>
+    </div>
+  </footer>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUFFIX = "cinematic photorealistic film still, 35mm anamorphic, natural volumetric light, muted jade-teal and aged-gold palette, ultra-detailed skin and fabric texture, subtle film grain";
+
+const NEG = "cartoon, anime, illustration, 3d render, CGI plastic skin, waxy, oversaturated, neon colors, modern clothing, brand logo, text, watermark, extra limbs, deformed hands, extra fingers, lowres, blurry, oversharpened, hdr";
+
+const DATA = [
+ {
+  id:"STYLE-00", type:"style", typeName:"风格锚",
+  title:"全局画风锚", en:"GLOBAL LOOK",
+  sub:"A1 电影写实 × D4 东方仙侠 · 所有条目共用",
+  notes:[
+   "<b>基准</b>：实拍电影质感，东方仙侠美学，非 CG 渲染感",
+   "<b>镜头</b>：35mm 变形宽银幕 T2.0，浅景深，轻镜头光晕",
+   "<b>光线</b>：自然体积光 + 丁达尔，空气中有雾与尘",
+   "<b>调色</b>：玉青压暗部，旧金提亮部，暗部偏墨绿",
+   "<b>质感</b>：真实毛孔、织物纹理，轻微颗粒，不做磨皮"
+  ],
+  prompt:"cinematic photorealistic film still, Chinese xianxia fantasy, 35mm anamorphic lens wide open, shallow depth of field, natural volumetric light with god rays through mist, fine floating dust particles, muted jade-teal and aged-gold color palette, deep ink-green shadows, warm highlight rolloff, ultra-detailed realistic skin texture with visible pores, authentic layered silk and linen fabric weave, subtle Kodak Vision3 film grain, 16:9 composition",
+  negative:NEG,
+  file:"STYLE-00_lookdev.jpg"
+ },
+ {
+  id:"SCENE-01", type:"scene", typeName:"风景",
+  title:"云海仙山 · 晨", en:"SEA OF CLOUDS",
+  sub:"L1 晨雾玉青 · 28mm 大远景",
+  notes:[
+   "<b>地点</b>：孤峰之上的古山门，千级石阶嵌入崖壁",
+   "<b>时间</b>：日出前 20 分钟，云海翻涌",
+   "<b>光源</b>：低角度逆光，光束穿云雾形成丁达尔",
+   "<b>必须出现</b>：云海、古松、石阶、远山层叠",
+   "<b>禁止出现</b>：现代建筑、电线、航拍器"
+  ],
+  prompt:"epic wide establishing shot, a towering immortal mountain peak rising above a thick sea of clouds at dawn, an ancient stone stairway carved into the cliff face, gnarled pines clinging to the rock, distant peaks layered in blue atmospheric haze, low backlight breaking through the mist with strong god rays, cool jade-teal shadows and pale gold rim light on the cloud tops, tiny human silhouette on the stairs for scale, deep focus, " + SUFFIX,
+  negative:NEG,
+  file:"SCENE-01_cloud-mountain.jpg"
+ },
+ {
+  id:"SCENE-02", type:"scene", typeName:"风景",
+  title:"竹林飞瀑 · 正午", en:"BAMBOO FALLS",
+  sub:"L2 正午琥珀 · 50mm 中景",
+  notes:[
+   "<b>地点</b>：密竹林深处，一线飞瀑落入墨玉深潭",
+   "<b>时间</b>：正午，阳光穿透竹叶",
+   "<b>光源</b>：硬光短影，强烈明暗切割",
+   "<b>必须出现</b>：竹叶光斑、水雾、湿苔、水面反光",
+   "<b>氛围</b>：湿润、清凉、有回声感"
+  ],
+  prompt:"medium-wide shot inside a dense bamboo forest at high noon, a thin waterfall dropping into a dark jade pool, hard shafts of sunlight cutting through bamboo leaves, floating pollen and water spray suspended in the air, wet moss-covered rocks, deep green shadows with crisp sunlit highlights, backlit water mist glowing, 50mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"SCENE-02_bamboo-falls.jpg"
+ },
+ {
+  id:"SCENE-03", type:"scene", typeName:"风景",
+  title:"大漠烽燧 · 黄昏", en:"DESERT BEACON",
+  sub:"L3 黄昏金红 · 28mm 大远景",
+  notes:[
+   "<b>地点</b>：无人沙海，孤立夯土烽燧只剩半壁",
+   "<b>时间</b>：日落前 15 分钟，风沙起",
+   "<b>光源</b>：极低角度侧逆光，影子拉长十倍",
+   "<b>必须出现</b>：沙脊线、飘扬风沙、破旗、驼队剪影",
+   "<b>色调</b>：琥珀金主调，暗部压深青"
+  ],
+  prompt:"wide shot of an ancient ruined beacon tower standing alone on a vast desert dune field at golden hour, wind-blown dust streaming across the sand ridges, extremely long dramatic shadows, warm amber and burnt-orange sunlight against deep teal shadows, a distant caravan silhouette on the horizon, torn fabric flag snapping in the wind, 28mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"SCENE-03_desert-beacon.jpg"
+ },
+ {
+  id:"SCENE-04", type:"scene", typeName:"风景",
+  title:"雨夜古镇 · 夜", en:"RAINY TOWN",
+  sub:"L4 夜蓝烛火 · 50mm 中景 浅景深",
+  notes:[
+   "<b>地点</b>：窄巷老街，木构店铺与褪色酒旗",
+   "<b>时间</b>：深夜，持续中雨",
+   "<b>光源</b>：纸灯笼暖光点状分布，环境蓝",
+   "<b>必须出现</b>：湿石反光、雨丝、灯笼光晕、雾",
+   "<b>氛围</b>：孤寂、潮湿、有烟火气"
+  ],
+  prompt:"atmospheric night shot of a narrow ancient Chinese town street in heavy rain, wet stone paving reflecting warm lantern light, wooden shophouses with faded red banners, thin mist and visible rain streaks, deep blue ambient with isolated amber pools of light from paper lanterns, shallow depth of field on a foreground puddle, 50mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"SCENE-04_rainy-town.jpg"
+ },
+ {
+  id:"SCENE-05", type:"scene", typeName:"风景",
+  title:"雪岭古道 · 阴天", en:"SNOW PASS",
+  sub:"L1 变体 冷白高调 · 28mm 大远景",
+  notes:[
+   "<b>地点</b>：雪线之上的石砌古道，两侧冰崖夹峙",
+   "<b>时间</b>：阴天正午，云层均匀",
+   "<b>光源</b>：漫射柔光，低对比，冷白偏蓝",
+   "<b>必须出现</b>：雪粒子、冰棱、扭曲枯松、旧路碑",
+   "<b>氛围</b>：寂静、刺骨、有风声"
+  ],
+  prompt:"wide shot of a snow-covered mountain pass under flat overcast daylight, a narrow stone-paved ancient road winding between frozen cliff walls, bare twisted pines, wind-driven snow particles streaking across the frame, low-contrast soft white light with subtle blue shadow tones, desaturated cold palette, weathered stone milestone half buried in snow, 28mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"SCENE-05_snow-pass.jpg"
+ },
+ {
+  id:"SCENE-06", type:"scene", typeName:"风景",
+  title:"云顶祭坛 · 蓝调", en:"ALTAR ABOVE CLOUDS",
+  sub:"L4 变体 冷银月光 · 28mm 大远景",
+  notes:[
+   "<b>地点</b>：悬于云海之上的圆形石祭坛",
+   "<b>时间</b>：日落后蓝调时刻，月已升起",
+   "<b>光源</b>：单一月光侧照，符文微自发光",
+   "<b>必须出现</b>：刻纹符文、翻卷云层、残破石柱",
+   "<b>氛围</b>：神秘、肃穆、轻微不安"
+  ],
+  prompt:"wide shot of a circular stone altar on a clifftop above a rolling sea of clouds at blue hour, ancient carved runes faintly glowing on the stone, thin fog spilling over the cliff edge, a single beam of cold moonlight raking across the altar, broken pillars surrounding it, deep indigo shadows with cold silver highlights, 28mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"SCENE-06_altar-bluehour.jpg"
+ },
+ {
+  id:"CHAR-01", type:"char", typeName:"角色",
+  title:"少年剑客", en:"YOUNG SWORDSMAN",
+  sub:"男 · 20 岁 · 参照图正面 3/4",
+  notes:[
+   "<b>脸型</b>：窄长脸，颧骨清晰，下颌线利",
+   "<b>眉眼</b>：直眉、单眼皮、深黑瞳",
+   "<b>发型</b>：肩长黑发，皮绳松松低束",
+   "<b>体型</b>：瘦而有筋，身高约 178",
+   "<b>标志</b>：左眉上方一道旧疤；右手缠布条",
+   "<b>服装</b>：洗旧的靛蓝棉麻练功衣，布腰带"
+  ],
+  prompt:"character reference portrait, three-quarter view, upper body, a young Chinese swordsman around twenty, lean wiry build, narrow face with sharp jawline, straight dark eyebrows, deep black eyes, shoulder-length black hair tied loosely with a leather cord, a small old scar above his left eyebrow, right hand wrapped in linen strips, worn indigo-blue cotton training robes with frayed cuffs, dark cloth belt, sword hilt visible at his hip, guarded determined expression, plain deep charcoal background, soft even key light with subtle rim separation, 85mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"CHAR-01_young-swordsman.jpg"
+ },
+ {
+  id:"CHAR-02", type:"char", typeName:"角色",
+  title:"白衣女修", en:"WHITE-ROBED CULTIVATOR",
+  sub:"女 · 24 岁 · 参照图正面 3/4",
+  notes:[
+   "<b>脸型</b>：鹅蛋脸，颧骨柔和，下巴略尖",
+   "<b>眉眼</b>：长凤眼、浅灰褐瞳、细长眉",
+   "<b>发型</b>：黑长直，白玉簪半挽，余发垂至腰",
+   "<b>体型</b>：纤长，身高约 168",
+   "<b>标志</b>：颈侧一枚浅色小痣；腰佩素玉",
+   "<b>服装</b>：象牙白层叠丝袍，领口银线云纹"
+  ],
+  prompt:"character reference portrait, three-quarter view, upper body, an elegant Chinese female cultivator in her mid twenties, oval face with soft cheekbones, long phoenix eyes with pale grey-brown irises, fine arched eyebrows, long straight black hair half pinned with a white jade hairpin, slender tall build, layered ivory silk robes with silver thread cloud embroidery at the collar, a plain jade pendant at her waist, a small pale mole on her neck, serene cold expression, plain deep charcoal background, soft even key light with subtle rim light, 85mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"CHAR-02_white-cultivator.jpg"
+ },
+ {
+  id:"CHAR-03", type:"char", typeName:"角色",
+  title:"白发宗主", en:"OLD SECT MASTER",
+  sub:"男 · 70 岁 · 参照图正面 3/4",
+  notes:[
+   "<b>脸型</b>：方脸，法令纹与眉间纹很深",
+   "<b>眉眼</b>：浓白眉、眼窝深、目光锐",
+   "<b>发型</b>：银白发束顶髻，长须及胸",
+   "<b>体型</b>：瘦高，肩背微驼，身高约 175",
+   "<b>标志</b>：左手拇指一枚旧铜扳指",
+   "<b>服装</b>：灰绿层叠旧袍，深铜色包边"
+  ],
+  prompt:"character reference portrait, three-quarter view, upper body, an old Chinese sect master around seventy, weathered square face with deep nasolabial folds and furrowed brow, heavy white eyebrows, sunken sharp eyes, silver-white hair in a topknot with a long white beard reaching his chest, tall thin slightly stooped build, faded grey-green layered robes with dark bronze trim, a worn bronze thumb ring on his left hand, wooden staff just visible, dignified calm expression, plain deep charcoal background, soft even key light with subtle rim light, 85mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"CHAR-03_old-master.jpg"
+ },
+ {
+  id:"CHAR-04", type:"char", typeName:"角色",
+  title:"红衣魔修", en:"CRIMSON CULTIVATOR",
+  sub:"女 · 31 岁 · 参照图正面 3/4",
+  notes:[
+   "<b>脸型</b>：瘦削锐利，颧骨高，下颌窄",
+   "<b>眉眼</b>：上挑眼、黑瞳带一圈暗红、浓烟熏妆",
+   "<b>发型</b>：黑长发，暗红缎带缠束",
+   "<b>体型</b>：高挑清瘦，身高约 172",
+   "<b>标志</b>：颈前一串细银链；右手银爪戒",
+   "<b>服装</b>：黑红漆皮护甲罩暗红丝袍"
+  ],
+  prompt:"character reference portrait, three-quarter view, upper body, a Chinese female demonic cultivator in her early thirties, sharp angular face with high cheekbones, upswept eyes with black irises ringed in faint crimson, heavy smoky eye makeup, dark red lips, long black hair bound with crimson silk ribbons, tall lean build, black and crimson lacquered leather armor over dark red silk robes, silver claw rings on her right hand, a thin silver chain at her throat, cold mocking half-smile, plain deep charcoal background, soft even key light with subtle rim light, 85mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"CHAR-04_crimson-cultivator.jpg"
+ },
+ {
+  id:"CHAR-05", type:"char", typeName:"角色",
+  title:"市井孩童", en:"STREET CHILD",
+  sub:"男 · 12 岁 · 参照图正面 3/4",
+  notes:[
+   "<b>脸型</b>：圆脸，婴儿肥未退，鼻梁低",
+   "<b>眉眼</b>：圆眼、睫毛长、眉毛淡",
+   "<b>发型</b>：参差的短黑发，额前一撮翘起",
+   "<b>体型</b>：瘦小，身高约 140",
+   "<b>标志</b>：鼻梁上三颗浅雀斑；衣肘打补丁",
+   "<b>服装</b>：过大的粗麻短衣，布绳当腰带"
+  ],
+  prompt:"character reference portrait, three-quarter view, upper body, a Chinese street child around twelve, round face with baby fat, low nose bridge and three faint freckles across it, big round eyes with long lashes, light eyebrows, short unevenly cut black hair with a tuft sticking up in front, small thin build, oversized coarse hemp tunic with patched elbows, rope belt, a small cloth bundle strapped to his back, wary curious expression, plain deep charcoal background, soft even key light with subtle rim light, 85mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"CHAR-05_street-child.jpg"
+ },
+ {
+  id:"CHAR-06", type:"char", typeName:"角色",
+  title:"面具术士", en:"MASKED DIVINER",
+  sub:"未知 · 参照图正面 3/4",
+  notes:[
+   "<b>面具</b>：龟裂的白漆傩面，残存碎金箔",
+   "<b>身形</b>：高瘦，肩线极直，颈部细",
+   "<b>手部</b>：手指异常修长，指甲偏青",
+   "<b>服装</b>：黑麻连帽长袍，褪色赭黄符带",
+   "<b>配饰</b>：腰间一串青铜钱，走动有声",
+   "<b>气质</b>：静止感过强，令人不安"
+  ],
+  prompt:"character reference portrait, three-quarter view, upper body, a mysterious Chinese masked diviner, tall and thin with unnaturally straight shoulders, face hidden behind a cracked white lacquer exorcist mask with remnants of gold leaf, hooded black linen robe hung with faded ochre talisman strips, a string of bronze coins at the waist, long thin fingers with faintly blue-tinted nails, complete stillness, unsettling presence, plain deep charcoal background, soft even key light with subtle rim light, 85mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"CHAR-06_masked-diviner.jpg"
+ },
+ {
+  id:"PROP-01", type:"prop", typeName:"道具",
+  title:"古剑 · 静置", en:"ANCIENT SWORD",
+  sub:"85mm 微距 · 硬侧光",
+  notes:[
+   "<b>形制</b>：八面汉剑式直刃，剑身略有弧度",
+   "<b>纹理</b>：折叠锻打纹，刃口有细密崩口",
+   "<b>剑鞘</b>：暗铜包边，云纹阴刻，已氧化发乌",
+   "<b>配件</b>：褪色墨绿丝穗，缠绳磨损起毛",
+   "<b>光位</b>：单侧硬光横扫金属面，突出刻痕"
+  ],
+  prompt:"close-up product still of an ancient Chinese straight sword lying on dark stone, slightly curved blade with visible layered forging pattern, fine chips along the edge, tarnished bronze scabbard with engraved cloud motifs, worn dark green silk tassel, a single hard side light raking across the metal surface to reveal scratches, volumetric dust in the beam, plain deep charcoal background, 85mm macro lens, " + SUFFIX,
+  negative:NEG,
+  file:"PROP-01_ancient-sword.jpg"
+ },
+ {
+  id:"PROP-02", type:"prop", typeName:"道具",
+  title:"罗盘与符纸", en:"COMPASS & TALISMANS",
+  sub:"50mm 俯拍 · 烛光低位",
+  notes:[
+   "<b>主体</b>：青铜风水罗盘，多层同心刻度环",
+   "<b>陪体</b>：散落赭黄符纸，朱砂符文，边缘焦黑",
+   "<b>环境</b>：旧木桌面，划痕与烛泪",
+   "<b>光位</b>：右下方烛光，强烈明暗对比",
+   "<b>细节</b>：盘面有指痕与氧化绿锈"
+  ],
+  prompt:"overhead close-up of an antique bronze feng shui compass on a weathered wooden table, multiple engraved concentric rings with celestial characters, scattered ochre talisman papers marked with cinnabar symbols, burnt edges, dried candle wax and scratches on the wood, a single candle at the frame edge giving warm low-angle light against deep shadow, dust motes floating, 50mm lens, " + SUFFIX,
+  negative:NEG,
+  file:"PROP-02_compass-talismans.jpg"
+ }
+];
+
+const STORE_PREFIX = "xvb::img::";
+const els = {
+  grid: document.getElementById("grid"),
+  bar: document.getElementById("barFill"),
+  done: document.getElementById("doneNum"),
+  total: document.getElementById("totalNum"),
+  toast: document.getElementById("toast")
+};
+
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function toast(msg){
+  els.toast.textContent = msg;
+  els.toast.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>els.toast.classList.remove("show"), 2200);
+}
+
+function cardHTML(d){
+  const notes = d.notes.map(n=>"<li>"+n+"</li>").join("");
+  return '' +
+  '<article class="card" data-id="'+d.id+'" data-type="'+d.type+'">' +
+    '<div class="card-body">' +
+      '<div class="card-head">' +
+        '<span class="code">'+d.id+'</span>' +
+        '<span class="badge '+d.type+'">'+d.typeName+'</span>' +
+        '<span class="state" data-state></span>' +
+      '</div>' +
+      '<h3 class="serif">'+esc(d.title)+'<em>'+d.en+'</em></h3>' +
+      '<div class="sub">'+d.sub+'</div>' +
+      '<div class="slot" data-slot="'+d.id+'">' +
+        '<img alt="'+esc(d.title)+'">' +
+        '<div class="ph">拖入图片 / 点击选择<small>建议 1920×1080 · 16:9</small></div>' +
+        '<div class="acts"><button data-act="replace">替换</button><button data-act="remove">移除</button></div>' +
+        '<input type="file" accept="image/*" hidden>' +
+      '</div>' +
+      '<ul class="notes">'+notes+'</ul>' +
+      '<div class="prompt-box">' +
+        '<div class="prompt-label">IMAGE PROMPT<button class="copy" data-copy="'+d.id+'">复制</button></div>' +
+        '<p class="prompt" data-prompt="'+d.id+'">'+esc(d.prompt)+'</p>' +
+      '</div>' +
+      '<details class="neg"><summary>NEGATIVE PROMPT</summary><p>'+esc(d.negative)+'</p></details>' +
+      '<div class="file">建议文件名 <b>'+d.file+'</b></div>' +
+    '</div>' +
+  '</article>';
+}
+
+function render(){
+  els.grid.innerHTML = DATA.map(cardHTML).join("");
+  els.total.textContent = DATA.length;
+  DATA.forEach(d=>{
+    const saved = localStorage.getItem(STORE_PREFIX + d.id);
+    if(saved) applyImage(d.id, saved, false);
+  });
+  updateProgress();
+}
+
+function slotOf(id){ return els.grid.querySelector('[data-slot="'+id+'"]'); }
+
+function applyImage(id, dataUrl, save){
+  const slot = slotOf(id);
+  if(!slot) return;
+  slot.querySelector("img").src = dataUrl;
+  slot.classList.add("has");
+  const card = slot.closest(".card");
+  card.querySelector("[data-state]").classList.add("ok");
+  if(save){
+    try{
+      localStorage.setItem(STORE_PREFIX + id, dataUrl);
+    }catch(e){
+      toast("本地存储已满，图片未持久保存");
+    }
+  }
+  updateProgress();
+}
+
+function removeImage(id){
+  const slot = slotOf(id);
+  if(!slot) return;
+  slot.querySelector("img").removeAttribute("src");
+  slot.classList.remove("has");
+  slot.closest(".card").querySelector("[data-state]").classList.remove("ok");
+  localStorage.removeItem(STORE_PREFIX + id);
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = DATA.filter(d=>{
+    const s = slotOf(d.id);
+    return s && s.classList.contains("has");
+  }).length;
+  els.done.textContent = done;
+  els.bar.style.width = (DATA.length ? (done / DATA.length * 100) : 0) + "%";
+}
+
+function compress(file, cb){
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 1600;
+      const scale = Math.min(1, maxW / img.width);
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * scale);
+      c.height = Math.round(img.height * scale);
+      const ctx = c.getContext("2d");
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      try{ cb(c.toDataURL("image/jpeg", 0.86)); }
+      catch(err){ cb(e.target.result); }
+    };
+    img.onerror = () => toast("这个文件读不出来，换一张试试");
+    img.src = e.target.result;
+  };
+  reader.onerror = () => toast("读取文件失败");
+  reader.readAsDataURL(file);
+}
+
+function handleFile(id, file){
+  if(!file || !file.type.startsWith("image/")){ toast("请拖入图片文件"); return; }
+  compress(file, dataUrl => {
+    applyImage(id, dataUrl, true);
+    toast("已放置：" + id);
+  });
+}
+
+els.grid.addEventListener("click", e=>{
+  const slot = e.target.closest(".slot");
+  if(slot){
+    const act = e.target.closest("[data-act]");
+    const id = slot.dataset.slot;
+    if(act){
+      e.stopPropagation();
+      if(act.dataset.act === "remove"){ removeImage(id); toast("已移除 "+id); return; }
+      slot.querySelector("input[type=file]").click();
+      return;
+    }
+    slot.querySelector("input[type=file]").click();
+    return;
+  }
+  const copyBtn = e.target.closest(".copy");
+  if(copyBtn){
+    const d = DATA.find(x=>x.id === copyBtn.dataset.copy);
+    const text = d.prompt + "\n\nNegative: " + d.negative;
+    const done = ()=>{
+      copyBtn.textContent = "已复制";
+      copyBtn.classList.add("done");
+      setTimeout(()=>{ copyBtn.textContent = "复制"; copyBtn.classList.remove("done"); }, 1600);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  }
+});
+
+function fallbackCopy(text, done){
+  const t = document.createElement("textarea");
+  t.value = text;
+  t.style.position = "fixed";
+  t.style.opacity = "0";
+  document.body.appendChild(t);
+  t.select();
+  try{ document.execCommand("copy"); done(); }catch(e){ toast("复制失败，请手动选中"); }
+  document.body.removeChild(t);
+}
+
+els.grid.addEventListener("change", e=>{
+  if(e.target.matches("input[type=file]")){
+    const slot = e.target.closest(".slot");
+    if(e.target.files && e.target.files[0]){
+      handleFile(slot.dataset.slot, e.target.files[0]);
+    }
+    e.target.value = "";
+  }
+});
+
+els.grid.addEventListener("dragover", e=>{
+  const slot = e.target.closest(".slot");
+  if(!slot) return;
+  e.preventDefault();
+  slot.classList.add("over");
+});
+els.grid.addEventListener("dragleave", e=>{
+  const slot = e.target.closest(".slot");
+  if(slot) slot.classList.remove("over");
+});
+els.grid.addEventListener("drop", e=>{
+  const slot = e.target.closest(".slot");
+  if(!slot) return;
+  e.preventDefault();
+  slot.classList.remove("over");
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  handleFile(slot.dataset.slot, f);
+});
+
+document.querySelectorAll(".filter").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".filter").forEach(b=>b.classList.remove("on"));
+    btn.classList.add("on");
+    const f = btn.dataset.filter;
+    document.querySelectorAll(".card").forEach(c=>{
+      c.classList.toggle("hide", f !== "all" && c.dataset.type !== f);
+    });
+  });
+});
+
+document.getElementById("clearAll").addEventListener("click", ()=>{
+  if(!confirm("确定清空所有已放置的图片？")) return;
+  DATA.forEach(d=>removeImage(d.id));
+  toast("已清空全部图片");
+});
+
+document.getElementById("exportMd").addEventListener("click", ()=>{
+  let md = "# 画风圣经 · 提示词清单\n\n";
+  md += "- 画风：A1 电影感写实 + D4 东方仙侠\n";
+  md += "- 画幅：R1 16:9 / 1920×1080\n";
+  md += "- 统一后缀：" + SUFFIX + "\n\n---\n\n";
+  DATA.forEach(d=>{
+    md += "## " + d.id + " · " + d.title + "\n\n";
+    md += "> " + d.sub + "\n\n";
+    md += d.notes.map(n=>"- " + n.replace(/<[^>]+>/g,"")).join("\n") + "\n\n";
+    md += "**IMAGE PROMPT**\n\n```text\n" + d.prompt + "\n```\n\n";
+    md += "**NEGATIVE**\n\n```text\n" + d.negative + "\n```\n\n";
+    md += "建议文件名：`" + d.file + "`\n\n---\n\n";
+  });
+  const blob = new Blob([md], {type:"text/markdown;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "画风圣经_提示词清单.md";
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 3000);
+  toast("已导出 .md");
+});
+
+render();
+</script>
+</body>
+</html>
