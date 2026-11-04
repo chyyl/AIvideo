@@ -158,7 +158,7 @@ function scanInput() {
   // 2. 启动网页服务
   if (opts.server) {
     try {
-      await createServer({ port: cfg.port });
+      await createServer({ port: cfg.port, onUploaded: (f) => enqueue(f, 'upload') });
       log(`网页查看/下载: http://localhost:${cfg.port}`);
     } catch (e) {
       log(`网页服务启动失败: ${e.message}`);
