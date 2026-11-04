@@ -1,0 +1,22 @@
+{
+  "port": 8787,
+  "watch": true,
+  "supported": [".mp4", ".mov", ".mkv", ".webm", ".avi", ".m4v", ".gif", ".ts", ".wmv"],
+  "stableChecks": 3,
+  "stableIntervalMs": 1000,
+  "scanIntervalMs": 2000,
+  "frameFormat": "png",
+  "frameQuality": 2,
+  "compare": {
+    "enabled": true
+  },
+  "transcode": {
+    "enabled": true,
+    "codec": "libx264",
+    "crf": 23,
+    "preset": "medium",
+    "audioCodec": "aac",
+    "audioBitrate": "128k",
+    "scale": null
+  }
+}
