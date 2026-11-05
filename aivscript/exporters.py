@@ -32,11 +32,49 @@ def _sanitize(text: str) -> str:
     return text.strip("，。 ")
 
 
+def _scene_location(script: Script, shot) -> str:
+    for act in script.acts:
+        for scene in act.scenes:
+            if any(s.id == shot.id for s in scene.shots):
+                return scene.location or scene.heading
+    return ""
+
+
+def _shot_character(script: Script, shot):
+    """优先取主体命中的角色，其次取台词角色。"""
+    if shot.subject:
+        for character in script.characters:
+            if character.name and character.name in shot.subject:
+                return character
+    for line in shot.dialogue:
+        for character in script.characters:
+            if character.name and character.name == line.character:
+                return character
+    return None
+
+
+def _enrich(script: Script, shot, base: str) -> str:
+    """为提示词补全人物外貌与地点，已有则跳过。"""
+    clauses = [c for c in base.split("，") if c.strip()]
+    character = _shot_character(script, shot)
+    location = _scene_location(script, shot)
+    if character and character.appearance and character.appearance not in base:
+        annotated = f"{character.name}（{character.appearance}）"
+        if character.name and character.name in base:
+            clauses = [annotated if c.strip() == character.name else c for c in clauses]
+        else:
+            clauses.insert(1, annotated)
+    if location and location not in base:
+        clauses.insert(1, f"位于{location}")
+    return "，".join(clauses)
+
+
 def _shot_prompt(script: Script, shot, negative: str) -> str:
     """魔搭视频生成页只有一个正向提示词框，因此把画面、运动与排除项合成一条。"""
     base = shot.image_prompt.zh.strip()
     if not base:
         base = f"{SHOT_SIZE_ZH.get(shot.shot_size, shot.shot_size)}，{shot.subject}，{shot.action}"
+    base = _enrich(script, shot, base)
     parts = [base]
     if shot.video_prompt and shot.video_prompt not in base:
         parts.append(shot.video_prompt)
@@ -70,7 +108,7 @@ def modelscope_records(script: Script, fps: int = DEFAULT_FPS, max_seconds: floa
             "model_hint": "通义万相 · 文生视频" if index == 1 else "通义万相 · 图生视频",
             "prompt": _shot_prompt(script, shot, negative),
             "negative_prompt": negative,
-            "image_prompt": shot.image_prompt.zh,
+            "image_prompt": _enrich(script, shot, shot.image_prompt.zh),
             "first_frame": prev_shot,
             "prompt_enhance": False,
             "estimated_credits": 34,
