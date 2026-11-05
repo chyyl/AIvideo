@@ -202,13 +202,15 @@ class AIVScriptApp(App[None]):
     .field { color: #8a97a8; height: 1; margin-top: 1; }
     #status { height: 2; content-align: left middle; color: #9aa7b8; }
     #shots { height: 1fr; }
-    #shot-detail { height: 1fr; padding: 1; }
+    #detail-scroll { height: 1fr; }
+    #shot-detail { height: auto; padding: 1; }
     #log { height: 6; border: round #2b3240; }
     #toolbar { height: 3; margin-top: 1; }
     #toolbar Button { margin-right: 1; min-width: 8; }
     TabbedContent { height: 1fr; }
     TabPane { height: 1fr; }
     #preview, #prompts { height: 1fr; }
+    VerticalScroll { scrollbar-size-vertical: 1; }
     """
 
     def __init__(self, offline: bool = False) -> None:
@@ -226,7 +228,7 @@ class AIVScriptApp(App[None]):
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
         with Container(id="body"):
-            with Vertical(id="sidebar"):
+            with VerticalScroll(id="sidebar"):
                 yield Static("① 创作设定", classes="section-title")
                 yield Button("高级设定 Ctrl+A", id="advanced")
                 yield Static("主题 / 题目", classes="field")
@@ -248,7 +250,8 @@ class AIVScriptApp(App[None]):
                     with TabPane("剧本预览", id="tab-preview"):
                         yield Markdown("", id="preview")
                     with TabPane("镜头详情", id="tab-detail"):
-                        yield Static("选中一行分镜查看完整镜头信息", id="shot-detail")
+                        with VerticalScroll(id="detail-scroll"):
+                            yield Static("选中一行分镜查看完整镜头信息", id="shot-detail")
                     with TabPane("提示词库", id="tab-prompts"):
                         yield Markdown(self._prompt_text(), id="prompts")
                         yield Button("查看 42 问提问链", id="show-questions")
@@ -513,12 +516,15 @@ class AIVScriptApp(App[None]):
             paths[0].write_text(to_yaml(self.script), encoding="utf-8")
             paths[1].write_text(to_markdown(self.script), encoding="utf-8")
             paths[2].write_text(to_json(self.script), encoding="utf-8")
+            from .exporters import write_modelscope_files
+
+            paths += write_modelscope_files(self.script, outdir)
         except OSError as exc:
             self.notify(f"写入失败：{exc}", severity="error")
             return
         for path in paths:
             _log_line(self.query_one("#log", RichLog), f"已导出 {path}")
-        self.notify(f"已导出 3 个文件到 {outdir}", severity="information")
+        self.notify(f"已导出 {len(paths)} 个文件到 {outdir}", severity="information")
 
     def _open_advanced(self) -> None:
         self.push_screen(

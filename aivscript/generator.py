@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass
 from typing import Callable, Protocol
 
 from .llm import LLMClient, LLMError, extract_json
-from .models import Act, Character, Meta, Scene, Script, Shot, SHOT_SIZE_ZH
+from .models import Act, Character, Meta, Scene, Script, Shot, CAMERA_ZH, SHOT_SIZE_ZH
 from .prompts import (
     PREMISE_USER,
     REPAIR_USER,
@@ -63,6 +63,15 @@ class Backend(Protocol):
     def shots(self, inp: GenInput, context: dict) -> dict: ...
 
     def regen_shot(self, inp: GenInput, shot: dict) -> dict: ...
+
+
+def _first_clause(text: str, limit: int) -> str:
+    text = (text or "").strip()
+    for sep in ("，", "。", "；", "、", ","):
+        if sep in text:
+            text = text.split(sep)[0]
+            break
+    return text if len(text) <= limit else text[: limit - 1] + "…"
 
 
 def _characters_text(characters: list[Character]) -> str:
@@ -173,9 +182,12 @@ SIZE_EN = {
 class MockBackend:
     """离线后端：不调用模型，用结构模板产出可演示的完整脚本。"""
 
+    protagonist = "主角"
+
     def premise(self, inp: GenInput) -> dict:
         palette = GENRE_PALETTE.get(inp.genre, GENRE_PALETTE["情感"])
         protagonist = "阿岚"
+        self.protagonist = protagonist
         title = inp.theme.strip().strip("《》")
         if len(title) > 14:
             clause = title.split("，")[0].strip()
@@ -317,7 +329,14 @@ class MockBackend:
             beat = beats[index % len(beats)]
             size = sizes[index % len(sizes)]
             camera = cameras[index % len(cameras)]
-            subject = beat.get("text", "")[:20] or context["location"]
+            camera_zh = CAMERA_ZH.get(camera, camera)
+            if beat.get("type") == "dialogue":
+                who = beat.get("character") or "人物"
+                subject = who
+                action_text = f"{who}开口说话，表情克制"
+            else:
+                subject = getattr(self, "protagonist", "主角")
+                action_text = _first_clause(beat.get("text", ""), 32) or "画面静止，只有光线变化"
             dialogue = []
             if index == 0 and dialogue_beat:
                 dialogue = [
@@ -335,23 +354,28 @@ class MockBackend:
                     "shot_size": size,
                     "camera": camera,
                     "subject": subject,
-                    "action": beat.get("text", ""),
+                    "action": action_text,
                     "dialogue": dialogue,
                     "sfx": ["雨声" if "雨" in inp.style or index == 0 else "环境底噪"],
                     "bgm": "低频弦乐，音量渐弱" if index == 0 else "静音，只留呼吸声",
                     "subtitle": dialogue[0]["text"] if dialogue else "",
                     "image_prompt": {
                         "zh": (
-                            f"{SHOT_SIZE_ZH.get(size, size)}，{subject}，场景位于{context['location']}，"
-                            f"{palette['light']}，{inp.style}，电影感构图，{inp.aspect_ratio}"
+                            f"{SHOT_SIZE_ZH.get(size, size)}，{subject}，"
+                            f"位于{context['location']}，{palette['light']}，"
+                            f"{inp.style}，电影感构图，{inp.aspect_ratio}"
                         ),
                         "en": (
-                            f"{SIZE_EN.get(size, size)} shot, a lone figure in a dim interior, "
-                            f"{palette['en']} visual style, {inp.style}, cinematic lighting, "
+                            f"{SIZE_EN.get(size, size)} shot, a single subject in a dim interior, "
+                            f"{palette['en']} style, moody lighting, muted palette, "
                             f"film grain, {inp.aspect_ratio} aspect ratio, highly detailed"
                         ),
                     },
-                    "video_prompt": f"缓慢运镜（{camera}），{beat.get('text', '')[:30]}",
+                    "video_prompt": (
+                        f"固定机位，{action_text[:30]}"
+                        if camera == "static"
+                        else f"缓慢运镜（{camera_zh}），{action_text[:30]}"
+                    ),
                     "negative_prompt": "畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感",
                     "transition_out": "cut" if index < count - 1 else "fade_out",
                     "notes": f"第 {index + 1} 镜，控制在 {duration}s 内",

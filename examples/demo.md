@@ -52,10 +52,10 @@
 
 | ID | # | 时长 | 景别 | 运镜 | 主体 | 动作 | 转场 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| shot-1-1-1 | 1 | 4.5 | wide | push_in | 老公寓楼道里只剩一盏灯，门缝下塞进一张没 | 老公寓楼道里只剩一盏灯，门缝下塞进一张没有署名的照片。 | cut |
-| shot-1-1-2 | 2 | 4.5 | medium | static | 你早就知道，只是不想承认。 | 你早就知道，只是不想承认。 | cut |
-| shot-1-1-3 | 3 | 4.5 | medium_close | tracking | 他伸手去关灯，手停在半空，又收了回来。 | 他伸手去关灯，手停在半空，又收了回来。 | cut |
-| shot-1-1-4 | 4 | 4.5 | close | pull_out | 老公寓楼道里只剩一盏灯，门缝下塞进一张没 | 老公寓楼道里只剩一盏灯，门缝下塞进一张没有署名的照片。 | fade_out |
+| shot-1-1-1 | 1 | 4.5 | wide | push_in | 阿岚 | 老公寓楼道里只剩一盏灯 | cut |
+| shot-1-1-2 | 2 | 4.5 | medium | static | 老周 | 老周开口说话，表情克制 | cut |
+| shot-1-1-3 | 3 | 4.5 | medium_close | tracking | 阿岚 | 他伸手去关灯 | cut |
+| shot-1-1-4 | 4 | 4.5 | close | pull_out | 阿岚 | 老公寓楼道里只剩一盏灯 | fade_out |
 
 ##### 镜头 shot-1-1-1 细节
 
@@ -64,9 +64,9 @@
 - 音效：雨声
 - 配乐：低频弦乐，音量渐弱
 - 字幕：你早就知道，只是不想承认。
-- 图像提示词（中文）：远景，老公寓楼道里只剩一盏灯，门缝下塞进一张没，场景位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：wide shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（push_in），老公寓楼道里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：远景，阿岚，位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：wide shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（缓推），老公寓楼道里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 1 镜，控制在 4.5s 内
 
@@ -75,9 +75,9 @@
 - 时间码：00:04.50 → 00:09.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中景，你早就知道，只是不想承认。，场景位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（static），你早就知道，只是不想承认。
+- 图像提示词（中文）：中景，老周，位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：固定机位，老周开口说话，表情克制
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 2 镜，控制在 4.5s 内
 
@@ -86,9 +86,9 @@
 - 时间码：00:09.00 → 00:13.50
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中近景，他伸手去关灯，手停在半空，又收了回来。，场景位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（tracking），他伸手去关灯，手停在半空，又收了回来。
+- 图像提示词（中文）：中近景，阿岚，位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（跟拍），他伸手去关灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 3 镜，控制在 4.5s 内
 
@@ -97,9 +97,9 @@
 - 时间码：00:13.50 → 00:18.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：特写，老公寓楼道里只剩一盏灯，门缝下塞进一张没，场景位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（pull_out），老公寓楼道里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：特写，阿岚，位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（拉远），老公寓楼道里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 4 镜，控制在 4.5s 内
 
@@ -121,10 +121,10 @@
 
 | ID | # | 时长 | 景别 | 运镜 | 主体 | 动作 | 转场 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| shot-1-2-1 | 1 | 4.5 | wide | push_in | 深夜便利店里只剩一盏灯，门缝下塞进一张没 | 深夜便利店里只剩一盏灯，门缝下塞进一张没有署名的照片。 | cut |
-| shot-1-2-2 | 2 | 4.5 | medium | static | 你早就知道，只是不想承认。 | 你早就知道，只是不想承认。 | cut |
-| shot-1-2-3 | 3 | 4.5 | medium_close | tracking | 他伸手去关灯，手停在半空，又收了回来。 | 他伸手去关灯，手停在半空，又收了回来。 | cut |
-| shot-1-2-4 | 4 | 4.5 | close | pull_out | 深夜便利店里只剩一盏灯，门缝下塞进一张没 | 深夜便利店里只剩一盏灯，门缝下塞进一张没有署名的照片。 | fade_out |
+| shot-1-2-1 | 1 | 4.5 | wide | push_in | 阿岚 | 深夜便利店里只剩一盏灯 | cut |
+| shot-1-2-2 | 2 | 4.5 | medium | static | 老周 | 老周开口说话，表情克制 | cut |
+| shot-1-2-3 | 3 | 4.5 | medium_close | tracking | 阿岚 | 他伸手去关灯 | cut |
+| shot-1-2-4 | 4 | 4.5 | close | pull_out | 阿岚 | 深夜便利店里只剩一盏灯 | fade_out |
 
 ##### 镜头 shot-1-2-1 细节
 
@@ -133,9 +133,9 @@
 - 音效：雨声
 - 配乐：低频弦乐，音量渐弱
 - 字幕：你早就知道，只是不想承认。
-- 图像提示词（中文）：远景，深夜便利店里只剩一盏灯，门缝下塞进一张没，场景位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：wide shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（push_in），深夜便利店里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：远景，阿岚，位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：wide shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（缓推），深夜便利店里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 1 镜，控制在 4.5s 内
 
@@ -144,9 +144,9 @@
 - 时间码：00:22.50 → 00:27.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中景，你早就知道，只是不想承认。，场景位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（static），你早就知道，只是不想承认。
+- 图像提示词（中文）：中景，老周，位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：固定机位，老周开口说话，表情克制
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 2 镜，控制在 4.5s 内
 
@@ -155,9 +155,9 @@
 - 时间码：00:27.00 → 00:31.50
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中近景，他伸手去关灯，手停在半空，又收了回来。，场景位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（tracking），他伸手去关灯，手停在半空，又收了回来。
+- 图像提示词（中文）：中近景，阿岚，位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（跟拍），他伸手去关灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 3 镜，控制在 4.5s 内
 
@@ -166,9 +166,9 @@
 - 时间码：00:31.50 → 00:36.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：特写，深夜便利店里只剩一盏灯，门缝下塞进一张没，场景位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（pull_out），深夜便利店里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：特写，阿岚，位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（拉远），深夜便利店里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 4 镜，控制在 4.5s 内
 
@@ -194,10 +194,10 @@
 
 | ID | # | 时长 | 景别 | 运镜 | 主体 | 动作 | 转场 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| shot-2-1-1 | 1 | 4.5 | wide | push_in | 地下停车场里只剩一盏灯，门缝下塞进一张没 | 地下停车场里只剩一盏灯，门缝下塞进一张没有署名的照片。 | cut |
-| shot-2-1-2 | 2 | 4.5 | medium | static | 你早就知道，只是不想承认。 | 你早就知道，只是不想承认。 | cut |
-| shot-2-1-3 | 3 | 4.5 | medium_close | tracking | 他伸手去关灯，手停在半空，又收了回来。 | 他伸手去关灯，手停在半空，又收了回来。 | cut |
-| shot-2-1-4 | 4 | 4.5 | close | pull_out | 地下停车场里只剩一盏灯，门缝下塞进一张没 | 地下停车场里只剩一盏灯，门缝下塞进一张没有署名的照片。 | fade_out |
+| shot-2-1-1 | 1 | 4.5 | wide | push_in | 阿岚 | 地下停车场里只剩一盏灯 | cut |
+| shot-2-1-2 | 2 | 4.5 | medium | static | 老周 | 老周开口说话，表情克制 | cut |
+| shot-2-1-3 | 3 | 4.5 | medium_close | tracking | 阿岚 | 他伸手去关灯 | cut |
+| shot-2-1-4 | 4 | 4.5 | close | pull_out | 阿岚 | 地下停车场里只剩一盏灯 | fade_out |
 
 ##### 镜头 shot-2-1-1 细节
 
@@ -206,9 +206,9 @@
 - 音效：雨声
 - 配乐：低频弦乐，音量渐弱
 - 字幕：你早就知道，只是不想承认。
-- 图像提示词（中文）：远景，地下停车场里只剩一盏灯，门缝下塞进一张没，场景位于地下停车场，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：wide shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（push_in），地下停车场里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：远景，阿岚，位于地下停车场，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：wide shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（缓推），地下停车场里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 1 镜，控制在 4.5s 内
 
@@ -217,9 +217,9 @@
 - 时间码：00:40.50 → 00:45.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中景，你早就知道，只是不想承认。，场景位于地下停车场，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（static），你早就知道，只是不想承认。
+- 图像提示词（中文）：中景，老周，位于地下停车场，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：固定机位，老周开口说话，表情克制
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 2 镜，控制在 4.5s 内
 
@@ -228,9 +228,9 @@
 - 时间码：00:45.00 → 00:49.50
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中近景，他伸手去关灯，手停在半空，又收了回来。，场景位于地下停车场，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（tracking），他伸手去关灯，手停在半空，又收了回来。
+- 图像提示词（中文）：中近景，阿岚，位于地下停车场，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（跟拍），他伸手去关灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 3 镜，控制在 4.5s 内
 
@@ -239,9 +239,9 @@
 - 时间码：00:49.50 → 00:54.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：特写，地下停车场里只剩一盏灯，门缝下塞进一张没，场景位于地下停车场，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（pull_out），地下停车场里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：特写，阿岚，位于地下停车场，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（拉远），地下停车场里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 4 镜，控制在 4.5s 内
 
@@ -263,10 +263,10 @@
 
 | ID | # | 时长 | 景别 | 运镜 | 主体 | 动作 | 转场 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| shot-2-2-1 | 1 | 4.5 | wide | push_in | 老公寓楼道里只剩一盏灯，门缝下塞进一张没 | 老公寓楼道里只剩一盏灯，门缝下塞进一张没有署名的照片。 | cut |
-| shot-2-2-2 | 2 | 4.5 | medium | static | 你早就知道，只是不想承认。 | 你早就知道，只是不想承认。 | cut |
-| shot-2-2-3 | 3 | 4.5 | medium_close | tracking | 他伸手去关灯，手停在半空，又收了回来。 | 他伸手去关灯，手停在半空，又收了回来。 | cut |
-| shot-2-2-4 | 4 | 4.5 | close | pull_out | 老公寓楼道里只剩一盏灯，门缝下塞进一张没 | 老公寓楼道里只剩一盏灯，门缝下塞进一张没有署名的照片。 | fade_out |
+| shot-2-2-1 | 1 | 4.5 | wide | push_in | 阿岚 | 老公寓楼道里只剩一盏灯 | cut |
+| shot-2-2-2 | 2 | 4.5 | medium | static | 老周 | 老周开口说话，表情克制 | cut |
+| shot-2-2-3 | 3 | 4.5 | medium_close | tracking | 阿岚 | 他伸手去关灯 | cut |
+| shot-2-2-4 | 4 | 4.5 | close | pull_out | 阿岚 | 老公寓楼道里只剩一盏灯 | fade_out |
 
 ##### 镜头 shot-2-2-1 细节
 
@@ -275,9 +275,9 @@
 - 音效：雨声
 - 配乐：低频弦乐，音量渐弱
 - 字幕：你早就知道，只是不想承认。
-- 图像提示词（中文）：远景，老公寓楼道里只剩一盏灯，门缝下塞进一张没，场景位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：wide shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（push_in），老公寓楼道里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：远景，阿岚，位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：wide shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（缓推），老公寓楼道里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 1 镜，控制在 4.5s 内
 
@@ -286,9 +286,9 @@
 - 时间码：00:58.50 → 01:03.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中景，你早就知道，只是不想承认。，场景位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（static），你早就知道，只是不想承认。
+- 图像提示词（中文）：中景，老周，位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：固定机位，老周开口说话，表情克制
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 2 镜，控制在 4.5s 内
 
@@ -297,9 +297,9 @@
 - 时间码：01:03.00 → 01:07.50
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中近景，他伸手去关灯，手停在半空，又收了回来。，场景位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（tracking），他伸手去关灯，手停在半空，又收了回来。
+- 图像提示词（中文）：中近景，阿岚，位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（跟拍），他伸手去关灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 3 镜，控制在 4.5s 内
 
@@ -308,9 +308,9 @@
 - 时间码：01:07.50 → 01:12.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：特写，老公寓楼道里只剩一盏灯，门缝下塞进一张没，场景位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（pull_out），老公寓楼道里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：特写，阿岚，位于老公寓楼道，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（拉远），老公寓楼道里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 4 镜，控制在 4.5s 内
 
@@ -336,10 +336,10 @@
 
 | ID | # | 时长 | 景别 | 运镜 | 主体 | 动作 | 转场 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| shot-3-1-1 | 1 | 4.5 | wide | push_in | 深夜便利店里只剩一盏灯，门缝下塞进一张没 | 深夜便利店里只剩一盏灯，门缝下塞进一张没有署名的照片。 | cut |
-| shot-3-1-2 | 2 | 4.5 | medium | static | 你早就知道，只是不想承认。 | 你早就知道，只是不想承认。 | cut |
-| shot-3-1-3 | 3 | 4.5 | medium_close | tracking | 他伸手去关灯，手停在半空，又收了回来。 | 他伸手去关灯，手停在半空，又收了回来。 | cut |
-| shot-3-1-4 | 4 | 4.5 | close | pull_out | 深夜便利店里只剩一盏灯，门缝下塞进一张没 | 深夜便利店里只剩一盏灯，门缝下塞进一张没有署名的照片。 | fade_out |
+| shot-3-1-1 | 1 | 4.5 | wide | push_in | 阿岚 | 深夜便利店里只剩一盏灯 | cut |
+| shot-3-1-2 | 2 | 4.5 | medium | static | 老周 | 老周开口说话，表情克制 | cut |
+| shot-3-1-3 | 3 | 4.5 | medium_close | tracking | 阿岚 | 他伸手去关灯 | cut |
+| shot-3-1-4 | 4 | 4.5 | close | pull_out | 阿岚 | 深夜便利店里只剩一盏灯 | fade_out |
 
 ##### 镜头 shot-3-1-1 细节
 
@@ -348,9 +348,9 @@
 - 音效：雨声
 - 配乐：低频弦乐，音量渐弱
 - 字幕：你早就知道，只是不想承认。
-- 图像提示词（中文）：远景，深夜便利店里只剩一盏灯，门缝下塞进一张没，场景位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：wide shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（push_in），深夜便利店里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：远景，阿岚，位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：wide shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（缓推），深夜便利店里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 1 镜，控制在 4.5s 内
 
@@ -359,9 +359,9 @@
 - 时间码：01:16.50 → 01:21.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中景，你早就知道，只是不想承认。，场景位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（static），你早就知道，只是不想承认。
+- 图像提示词（中文）：中景，老周，位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：固定机位，老周开口说话，表情克制
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 2 镜，控制在 4.5s 内
 
@@ -370,9 +370,9 @@
 - 时间码：01:21.00 → 01:25.50
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：中近景，他伸手去关灯，手停在半空，又收了回来。，场景位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：medium close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（tracking），他伸手去关灯，手停在半空，又收了回来。
+- 图像提示词（中文）：中近景，阿岚，位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：medium close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（跟拍），他伸手去关灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 3 镜，控制在 4.5s 内
 
@@ -381,8 +381,8 @@
 - 时间码：01:25.50 → 01:30.00
 - 音效：雨声
 - 配乐：静音，只留呼吸声
-- 图像提示词（中文）：特写，深夜便利店里只剩一盏灯，门缝下塞进一张没，场景位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
-- 图像提示词（英文）：close-up shot, a lone figure in a dim interior, mystery thriller visual style, 冷峻霓虹、雨夜、低饱和, cinematic lighting, film grain, 16:9 aspect ratio, highly detailed
-- 视频提示词：缓慢运镜（pull_out），深夜便利店里只剩一盏灯，门缝下塞进一张没有署名的照片。
+- 图像提示词（中文）：特写，阿岚，位于深夜便利店，单一顶光与长阴影，冷峻霓虹、雨夜、低饱和，电影感构图，16:9
+- 图像提示词（英文）：close-up shot, a single subject in a dim interior, mystery thriller style, moody lighting, muted palette, film grain, 16:9 aspect ratio, highly detailed
+- 视频提示词：缓慢运镜（拉远），深夜便利店里只剩一盏灯
 - 负面提示词：畸形手、多余肢体、文字水印、低清晰度、面部变形、塑料质感
 - 备注：第 4 镜，控制在 4.5s 内

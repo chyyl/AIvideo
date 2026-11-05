@@ -84,6 +84,17 @@ def _cmd_convert(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_modelscope(args: argparse.Namespace) -> int:
+    from .exporters import write_modelscope_files
+
+    script = _load(args.file)
+    paths = write_modelscope_files(script, args.outdir, fps=args.fps)
+    for path in paths:
+        print(f"已写入 {path}")
+    print(f"共 {len(list(script.shots))} 个镜头，可逐个复制提示词到魔搭 AIGC 生成视频栏目")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="aivscript", description="AI 视频脚本自动生成器（TUI + DSL）"
@@ -111,6 +122,11 @@ def build_parser() -> argparse.ArgumentParser:
     conv.add_argument("file")
     conv.add_argument("--to", required=True, choices=["yaml", "yml", "md", "json"])
     conv.add_argument("--out")
+
+    ms = sub.add_parser("modelscope", help="导出魔搭 AIGC 生成视频逐镜提示词")
+    ms.add_argument("file")
+    ms.add_argument("--outdir", default="output/modelscope")
+    ms.add_argument("--fps", type=int, default=16)
     return parser
 
 
@@ -120,7 +136,7 @@ def main(argv: list[str] | None = None) -> int:
     if not argv or argv[0] in ("-h", "--help"):
         parser.print_help()
         return 0
-    if argv[0] not in {"run", "generate", "validate", "convert"}:
+    if argv[0] not in {"run", "generate", "validate", "convert", "modelscope"}:
         argv.insert(0, "run")
     args = parser.parse_args(argv)
 
@@ -130,6 +146,8 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_validate(args)
     if args.command == "convert":
         return _cmd_convert(args)
+    if args.command == "modelscope":
+        return _cmd_modelscope(args)
 
     from .app import launch
 

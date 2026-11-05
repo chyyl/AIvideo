@@ -22,6 +22,7 @@ AI 视频脚本自动生成器：**Textual TUI** + **YAML 分镜 DSL** + **提�
 - **提示词驱动**：三阶段串行调用（立意 → 场景 → 分镜），每阶段强制严格 JSON，解析失败自动修复重试。
 - **双轨脚本**：YAML 是规范格式，Markdown 是人读剧本，二者可无损互转（见 [格式标准](docs/SCRIPT_FORMAT_SPEC.md)）。
 - **TUI 全流程**：分镜表、剧本预览、镜头详情、提示词库、单镜头编辑 / 重写、静态校验、一键导出。
+- **魔搭专用导出**：按镜头生成可直接粘贴到魔搭 AIGC「生成视频」的正向 / 反向提示词、分辨率与帧数，标注超 5s 需拆分的镜头。
 - **任意 OpenAI 兼容端点**：OpenAI、DeepSeek、Moonshot、自建中转均可。
 
 ## 安装
@@ -50,10 +51,12 @@ python -m aivscript run --offline # 强制离线 Mock
 | `Ctrl+E` | 编辑当前镜头 |
 | `Ctrl+R` | 重写当前镜头（换机位/景别） |
 | `Ctrl+L` | 校验 |
-| `Ctrl+S` | 导出全部（YAML + MD + JSON） |
+| `Ctrl+S` | 导出全部（YAML + MD + JSON + 魔搭逐镜提示词） |
 | `Ctrl+Q` | 退出 |
 
-导出目录：`output/<时间戳>/`。
+导出目录：`output/<时间戳>/`，其中 `modelscope_prompts.md` 为逐镜可复制提示词。
+
+> 小终端或内容超出时，左侧设定栏、镜头详情、剧本预览、提示词库均可用鼠标滚轮或 `PageUp` / `PageDown` 滚动。
 
 ### 命令行
 
@@ -68,6 +71,9 @@ python -m aivscript validate output/demo.yaml
 # 格式转换
 python -m aivscript convert output/demo.yaml --to md
 python -m aivscript convert output/demo.md --to json
+
+# 导出魔搭 AIGC 生成视频逐镜提示词
+python -m aivscript modelscope output/demo.yaml --outdir output/modelscope
 ```
 
 ### 接入模型
@@ -91,9 +97,11 @@ aivscript/
 ├── llm.py           # OpenAI 兼容客户端（标准库实现）
 ├── prompts.py       # 提示词库 + 42 问提问链
 ├── generator.py     # 三阶段管线 + 离线 Mock 后端
+├── exporters.py     # 魔搭 AIGC 生成视频逐镜提示词导出
 ├── app.py           # Textual TUI
 └── __main__.py      # CLI
 docs/
+├── AI_USAGE_TUTORIAL.md    # 给 AI 的操作手册（系统提示词 + SOP）
 ├── SCRIPT_FORMAT_SPEC.md   # 语言格式标准 v1.0
 └── PROMPTING_GUIDE.md      # 文本 AI + 提问生成剧情的方法与 42 问
 examples/
@@ -103,6 +111,7 @@ examples/
 
 ## 文档
 
+- [AI 使用教程](docs/AI_USAGE_TUTORIAL.md) — 可直接粘贴的系统提示词、CLI 作业流程、魔搭栏目落地步骤。
 - [脚本语言格式标准 v1.0](docs/SCRIPT_FORMAT_SPEC.md) — 字段、枚举、校验规则、Markdown 文法、转换矩阵。
 - [提示词与提问指南](docs/PROMPTING_GUIDE.md) — 六轮 42 问、创作简报模板、单场戏三步法、批评式迭代。
 

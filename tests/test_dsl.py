@@ -1,6 +1,7 @@
-import asyncio
+import json
 
 from aivscript import GenInput, Generator, MockBackend, validate
+from aivscript.exporters import to_modelscope_json, to_modelscope_markdown
 from aivscript.serialize import (
     from_json,
     from_markdown,
@@ -58,3 +59,17 @@ def test_regenerate_shot_changes_look():
     new_shot = Generator(MockBackend()).regenerate_shot(GenInput(), shot)
     assert new_shot.id == shot.id
     assert new_shot.shot_size != shot.shot_size or new_shot.camera != shot.camera
+
+
+def test_modelscope_export():
+    script = make_script()
+    data = json.loads(to_modelscope_json(script))
+    md = to_modelscope_markdown(script)
+    shots = list(script.shots)
+    assert data["target"] == "modelscope-aigc-video"
+    assert len(data["shots"]) == len(shots)
+    assert all(record["prompt_zh"] and record["resolution"] for record in data["shots"])
+    assert all(record["frame_count"] % 4 == 1 for record in data["shots"])
+    assert "正向提示词（中文，直接粘贴）" in md
+    assert "push_in" not in md
+    assert all(shot.id in md for shot in shots)
