@@ -19,5 +19,7 @@ def test_tui_generates_and_exports(tmp_path, monkeypatch):
             assert app.current_shot_id
             app._export_all()
             assert (tmp_path / "output").exists()
+            exported = list((tmp_path / "output").rglob("modelscope_prompts.md"))
+            assert exported, "缺少魔搭逐镜提示词文件"
 
     asyncio.run(run())

@@ -421,3 +421,28 @@ python -m aivscript convert script.md  --to json
 | `seed` | shots | 生成随机种子，便于复现 |
 | `model` | shots | 指定绘图 / 视频模型 |
 | `lip_sync` | shots | 口型同步参数 |
+
+---
+
+## 13. 魔搭 AIGC「生成视频」导出映射
+
+`python -m aivscript modelscope <script.yaml> --outdir <dir>` 按**镜头**展开，输出 `modelscope_prompts.md` 与 `modelscope_prompts.json`。
+
+### 13.1 字段映射
+
+| 输出字段 | 来源 | 规则 |
+| --- | --- | --- |
+| `prompt_zh` | `image_prompt.zh` + `video_prompt` | 拼接后补「画面稳定，主体一致，无镜头切换」；运镜代码转中文；合并重复逗号 |
+| `prompt_en` | `image_prompt.en` | 末尾补 `Smooth motion, consistent subject, no camera cuts, no text overlay.` |
+| `negative_prompt` | `negative_prompt` | 为空时使用默认负向词 |
+| `duration` | `duration` | 原样保留，`> 5s` 标记 `needs_split=true` |
+| `frame_count` | `duration` × `fps` | 按 4n+1 帧计算，默认 16fps |
+| `resolution` | `meta.aspect_ratio` | 16:9→1280×720，9:16→720×1280，4:3→1024×768，2.35:1→1280×544 |
+| `dialogue` / `subtitle` | 镜头台词 / 字幕 | 不进入提示词，单独列出供后期配音压字 |
+
+### 13.2 输出约束
+
+- 一个镜头对应一次生成任务，不做镜头合并。
+- 台词、字幕不写入提示词（生成模型无法稳定输出文字）。
+- `needs_split=true` 的镜头必须在生成栏目内拆段或缩短后剪辑补足。
+- 从第 2 镜起建议用「图生视频」并以上一镜尾帧为首帧，维持人物一致性。
