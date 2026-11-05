@@ -432,8 +432,7 @@ python -m aivscript convert script.md  --to json
 
 | 输出字段 | 来源 | 规则 |
 | --- | --- | --- |
-| `prompt_zh` | `image_prompt.zh` + `video_prompt` | 拼接后补「画面稳定，主体一致，无镜头切换」；运镜代码转中文；合并重复逗号 |
-| `prompt_en` | `image_prompt.en` | 末尾补 `Smooth motion, consistent subject, no camera cuts, no text overlay.` |
+| `prompt` | `image_prompt.zh` + `video_prompt` | 每个镜头只输出一条提示词；拼接后补「画面稳定，主体一致，无镜头切换」；运镜代码转中文；合并重复逗号 |
 | `negative_prompt` | `negative_prompt` | 为空时使用默认负向词 |
 | `duration` | `duration` | 原样保留，`> 5s` 标记 `needs_split=true` |
 | `frame_count` | `duration` × `fps` | 按 4n+1 帧计算，默认 16fps |

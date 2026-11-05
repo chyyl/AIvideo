@@ -32,7 +32,7 @@ def _sanitize(text: str) -> str:
     return text.strip("，。 ")
 
 
-def _prompt_zh(script: Script, shot) -> str:
+def _shot_prompt(script: Script, shot) -> str:
     base = shot.image_prompt.zh.strip()
     if not base:
         base = f"{SHOT_SIZE_ZH.get(shot.shot_size, shot.shot_size)}，{shot.subject}，{shot.action}"
@@ -41,13 +41,6 @@ def _prompt_zh(script: Script, shot) -> str:
         parts.append(shot.video_prompt)
     parts.append("画面稳定，主体一致，无镜头切换")
     return _sanitize("，".join(p.strip("，。 ") for p in parts if p.strip()))
-
-
-def _prompt_en(shot) -> str:
-    base = shot.image_prompt.en.strip()
-    if not base:
-        base = f"cinematic shot of {shot.subject}, {shot.action}"
-    return f"{base.rstrip('., ')}. Smooth motion, consistent subject, no camera cuts, no text overlay."
 
 
 def _frame_count(seconds: float, fps: int) -> int:
@@ -69,8 +62,7 @@ def modelscope_records(script: Script, fps: int = DEFAULT_FPS, max_seconds: floa
             "aspect_ratio": script.meta.aspect_ratio,
             "resolution": RESOLUTION_MAP.get(script.meta.aspect_ratio, "1280×720"),
             "model_hint": "通义万相 · 文生视频" if index == 1 else "通义万相 · 文生视频 / 图生视频（可用上一镜尾帧）",
-            "prompt_zh": _prompt_zh(script, shot),
-            "prompt_en": _prompt_en(shot),
+            "prompt": _shot_prompt(script, shot),
             "negative_prompt": shot.negative_prompt or DEFAULT_NEGATIVE,
             "dialogue": shot.dialogue_text(),
             "subtitle": shot.subtitle,
@@ -108,10 +100,11 @@ def to_modelscope_markdown(script: Script, fps: int = DEFAULT_FPS, max_seconds: 
         "## 使用方法",
         "",
         "1. 打开魔搭社区 AIGC 专区 → 生成视频 → 选择通义万相（文生视频）模型。",
-        "2. 复制某一镜的「正向提示词」到提示词框，反向提示词填入负向提示词。",
-        "3. 画幅、分辨率、时长按该镜「推荐参数」设置；时长超过 5s 的镜头请按提示拆分或分段生成。",
-        "4. 需要人物一致时，第 2 镜起可切换到「图生视频」，以上一镜尾帧作为首帧参考。",
-        "5. 台词与字幕不进入提示词（模型不生成文字），后期按「台词 / 字幕」轨单独配音与压字。",
+        "2. 一个镜头只用一条提示词：整段复制到提示词框即可，不要拆句。",
+        f"3. 负向提示词统一填：{DEFAULT_NEGATIVE}（可选，不填也能生成）。",
+        "4. 画幅、分辨率、时长按该镜「推荐参数」设置；时长超过 5s 的镜头请按提示拆分或分段生成。",
+        "5. 需要人物一致时，第 2 镜起可切换到「图生视频」，以上一镜尾帧作为首帧参考。",
+        "6. 台词与字幕不进入提示词（模型不生成文字），后期按「台词 / 字幕」轨单独配音与压字。",
         "",
         "## 镜头速查表",
         "",
@@ -131,22 +124,10 @@ def to_modelscope_markdown(script: Script, fps: int = DEFAULT_FPS, max_seconds: 
             f"### {record['index']}. {record['shot_id']}　{record['duration']:g}s · "
             f"{record['resolution']} · {record['camera']}",
             "",
-            "**正向提示词（中文，直接粘贴）**",
+            "**提示词（复制这一整条）**",
             "",
             "```text",
-            record["prompt_zh"],
-            "```",
-            "",
-            "**正向提示词（English）**",
-            "",
-            "```text",
-            record["prompt_en"],
-            "```",
-            "",
-            "**反向提示词**",
-            "",
-            "```text",
-            record["negative_prompt"],
+            record["prompt"],
             "```",
             "",
             f"**推荐参数**：时长 {record['duration']:g}s（约 {record['frame_count']} 帧 @{fps}fps）"

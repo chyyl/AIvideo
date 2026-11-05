@@ -68,8 +68,9 @@ def test_modelscope_export():
     shots = list(script.shots)
     assert data["target"] == "modelscope-aigc-video"
     assert len(data["shots"]) == len(shots)
-    assert all(record["prompt_zh"] and record["resolution"] for record in data["shots"])
+    assert all(record["prompt"] and record["resolution"] for record in data["shots"])
     assert all(record["frame_count"] % 4 == 1 for record in data["shots"])
-    assert "正向提示词（中文，直接粘贴）" in md
+    assert "**提示词（复制这一整条）**" in md
+    assert md.count("**提示词（复制这一整条）**") == len(shots)
     assert "push_in" not in md
     assert all(shot.id in md for shot in shots)
