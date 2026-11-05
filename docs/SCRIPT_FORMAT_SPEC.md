@@ -432,7 +432,7 @@ python -m aivscript convert script.md  --to json
 
 | 输出字段 | 来源 | 规则 |
 | --- | --- | --- |
-| `prompt` | `image_prompt.zh` + `video_prompt` | 每个镜头只输出一条提示词；拼接后补「画面稳定，主体一致，无镜头切换」与「避免出现：…」；运镜代码转中文 |
+| `prompt` | `image_prompt.zh` + `video_prompt` | 每个镜头只输出一条提示词；自动补全角色外貌（`characters[].appearance`）与场景地点；拼接后补「画面稳定，主体一致，无镜头切换」与「避免出现：…」；运镜代码转中文 |
 | `negative_prompt` | `negative_prompt` | 为空时使用默认负向词；页面无独立负向框，故同时并入 `prompt` 的「避免出现」 |
 | `tab` | 镜头序号 | 第 1 镜 `文生视频`，其后 `图生视频` |
 | `first_frame` | 上一镜 `shot_id` | 图生视频的首帧来源，空表示文生视频 |

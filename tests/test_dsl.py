@@ -79,3 +79,7 @@ def test_modelscope_export():
     assert data["shots"][1]["first_frame"] == data["shots"][0]["shot_id"]
     assert all(record["prompt_enhance"] is False for record in data["shots"])
     assert all("避免出现：" in record["prompt"] for record in data["shots"])
+    appearances = [c.appearance for c in script.characters if c.appearance]
+    assert all(any(a in record["prompt"] for a in appearances) for record in data["shots"])
+    locations = [s.location for a in script.acts for s in a.scenes if s.location]
+    assert all(any(loc in record["prompt"] for loc in locations) for record in data["shots"])
