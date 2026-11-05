@@ -17,7 +17,7 @@
 
 1. 生成一份 `script.yaml`，包含 ≥ 2 幕、≥ 6 个镜头；
 2. `validate` 无 `ERROR`（`WARN` 可接受，但需向用户说明）；
-3. 导出 `modelscope_prompts.md`，每个镜头一条可直接粘贴的提示词与推荐参数；
+3. 导出 `modelscope_prompts.md`，每个镜头一条可直接粘贴的完整提示词；
 4. 向用户汇报：文件路径、镜头总数、总时长、需要人工拆分或补拍的镜头。
 
 ---
@@ -127,7 +127,7 @@ python -m aivscript modelscope output/script.yaml --outdir output/modelscope
 
 | 文件 | 用途 |
 | --- | --- |
-| `modelscope_prompts.md` | 逐镜复制用：正向（中/英）、反向、推荐参数、台词字幕 |
+| `modelscope_prompts.md` | 逐镜复制用：每个镜头只给一条完整提示词 |
 | `modelscope_prompts.json` | 批量提交或自建脚本消费 |
 
 ### 步骤 6：交付汇报
@@ -149,7 +149,7 @@ python -m aivscript modelscope output/script.yaml --outdir output/modelscope
 2. 选择通义万相系列（文生视频 / 图生视频）；
 3. 从 `modelscope_prompts.md` 复制第 N 镜的**唯一一条提示词**，整段粘贴到提示词框（一镜一条，不要拆句）；
 4. 负向框填统一的默认负向词即可（栏目无负向框时忽略）；
-5. 按该镜「推荐参数」设置分辨率与时长：
+5. 按脚本画幅设置分辨率与时长（默认 16:9 / 5s）：
 
 | 画幅 | 分辨率 |
 | --- | --- |

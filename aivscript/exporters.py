@@ -87,72 +87,12 @@ def to_modelscope_json(script: Script, fps: int = DEFAULT_FPS, max_seconds: floa
 
 
 def to_modelscope_markdown(script: Script, fps: int = DEFAULT_FPS, max_seconds: float = MAX_SECONDS) -> str:
+    """只输出提示词本身：每个镜头一条完整提示词，可直接粘贴，不混入参数与台词。"""
     records = modelscope_records(script, fps, max_seconds)
-    meta = script.meta
-    lines = [
-        f"# 魔搭 AIGC 生成视频 · 逐镜提示词｜《{meta.title}》",
-        "",
-        f"- 类型 / 风格：{meta.genre} / {meta.style}",
-        f"- 画幅 / 分辨率：{meta.aspect_ratio} / {RESOLUTION_MAP.get(meta.aspect_ratio, '1280×720')}",
-        f"- 帧率：{fps} fps（万相按 4n+1 帧生成）",
-        f"- 镜头数：{len(records)}　｜　理论总时长：{script.duration:g}s",
-        "",
-        "## 使用方法",
-        "",
-        "1. 打开魔搭社区 AIGC 专区 → 生成视频 → 选择通义万相（文生视频）模型。",
-        "2. 一个镜头只用一条提示词：整段复制到提示词框即可，不要拆句。",
-        f"3. 负向提示词统一填：{DEFAULT_NEGATIVE}（可选，不填也能生成）。",
-        "4. 画幅、分辨率、时长按该镜「推荐参数」设置；时长超过 5s 的镜头请按提示拆分或分段生成。",
-        "5. 需要人物一致时，第 2 镜起可切换到「图生视频」，以上一镜尾帧作为首帧参考。",
-        "6. 台词与字幕不进入提示词（模型不生成文字），后期按「台词 / 字幕」轨单独配音与压字。",
-        "",
-        "## 镜头速查表",
-        "",
-        "| # | 镜头 | 时长 | 帧数 | 分辨率 | 需拆分 |",
-        "| --- | --- | --- | --- | --- | --- |",
-    ]
+    lines: list[str] = [f"# 魔搭 AIGC 生成视频 · 逐镜提示词｜《{script.meta.title}》", ""]
     for record in records:
-        lines.append(
-            f"| {record['index']} | {record['shot_id']} | {record['duration']:g}s | "
-            f"{record['frame_count']} | {record['resolution']} | "
-            f"{'是' if record['needs_split'] else '否'} |"
-        )
-
-    lines += ["", "## 逐镜提示词", ""]
-    for record in records:
-        lines += [
-            f"### {record['index']}. {record['shot_id']}　{record['duration']:g}s · "
-            f"{record['resolution']} · {record['camera']}",
-            "",
-            "**提示词（复制这一整条）**",
-            "",
-            "```text",
-            record["prompt"],
-            "```",
-            "",
-            f"**推荐参数**：时长 {record['duration']:g}s（约 {record['frame_count']} 帧 @{fps}fps）"
-            f"　｜　画幅 {record['aspect_ratio']}　｜　分辨率 {record['resolution']}"
-            f"　｜　{record['model_hint']}",
-        ]
-        if record["needs_split"]:
-            lines.append(
-                f"**注意**：该镜超过 {max_seconds:g}s，建议在生成栏目内拆成两段，或在剪辑中变速。"
-            )
-        if record["dialogue"]:
-            lines.append(f"**台词**：{record['dialogue']}")
-        if record["subtitle"]:
-            lines.append(f"**字幕**：{record['subtitle']}")
-        lines.append("")
-
-    lines += [
-        "## 一致性参数建议",
-        "",
-        f"- 固定负向提示词：{DEFAULT_NEGATIVE}",
-        "- 同一人物跨镜时，保持 `appearance` 描述逐字一致，或使用上一镜尾帧做图生视频。",
-        "- 同一场景内镜头尽量固定 seed（若栏目提供），便于失败镜头单独重跑。",
-        "",
-    ]
-    return "\n".join(lines)
+        lines += [f"## 镜头 {record['index']}", "", record["prompt"], ""]
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def write_modelscope_files(script: Script, outdir, fps: int = DEFAULT_FPS) -> list:

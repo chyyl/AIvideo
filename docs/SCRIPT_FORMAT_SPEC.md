@@ -437,11 +437,12 @@ python -m aivscript convert script.md  --to json
 | `duration` | `duration` | 原样保留，`> 5s` 标记 `needs_split=true` |
 | `frame_count` | `duration` × `fps` | 按 4n+1 帧计算，默认 16fps |
 | `resolution` | `meta.aspect_ratio` | 16:9→1280×720，9:16→720×1280，4:3→1024×768，2.35:1→1280×544 |
-| `dialogue` / `subtitle` | 镜头台词 / 字幕 | 不进入提示词，单独列出供后期配音压字 |
+| `dialogue` / `subtitle` | 镜头台词 / 字幕 | 不进入提示词，仅在 JSON 中保留供后期配音压字 |
 
 ### 13.2 输出约束
 
 - 一个镜头对应一次生成任务，不做镜头合并。
+- `modelscope_prompts.md` 只包含提示词本身，每个镜头一条，不混入参数、台词或说明文字。
 - 台词、字幕不写入提示词（生成模型无法稳定输出文字）。
 - `needs_split=true` 的镜头必须在生成栏目内拆段或缩短后剪辑补足。
 - 从第 2 镜起建议用「图生视频」并以上一镜尾帧为首帧，维持人物一致性。

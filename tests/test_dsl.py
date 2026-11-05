@@ -70,7 +70,6 @@ def test_modelscope_export():
     assert len(data["shots"]) == len(shots)
     assert all(record["prompt"] and record["resolution"] for record in data["shots"])
     assert all(record["frame_count"] % 4 == 1 for record in data["shots"])
-    assert "**提示词（复制这一整条）**" in md
-    assert md.count("**提示词（复制这一整条）**") == len(shots)
+    assert md.count("## 镜头 ") == len(shots)
+    assert all(record["prompt"] in md for record in data["shots"])
     assert "push_in" not in md
-    assert all(shot.id in md for shot in shots)
