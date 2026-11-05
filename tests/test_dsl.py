@@ -73,3 +73,9 @@ def test_modelscope_export():
     assert md.count("## 镜头 ") == len(shots)
     assert all(record["prompt"] in md for record in data["shots"])
     assert "push_in" not in md
+    assert data["shots"][0]["tab"] == "文生视频"
+    assert all(record["tab"] == "图生视频" for record in data["shots"][1:])
+    assert data["shots"][0]["first_frame"] == ""
+    assert data["shots"][1]["first_frame"] == data["shots"][0]["shot_id"]
+    assert all(record["prompt_enhance"] is False for record in data["shots"])
+    assert all("避免出现：" in record["prompt"] for record in data["shots"])

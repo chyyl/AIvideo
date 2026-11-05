@@ -32,7 +32,8 @@ def _sanitize(text: str) -> str:
     return text.strip("，。 ")
 
 
-def _shot_prompt(script: Script, shot) -> str:
+def _shot_prompt(script: Script, shot, negative: str) -> str:
+    """魔搭视频生成页只有一个正向提示词框，因此把画面、运动与排除项合成一条。"""
     base = shot.image_prompt.zh.strip()
     if not base:
         base = f"{SHOT_SIZE_ZH.get(shot.shot_size, shot.shot_size)}，{shot.subject}，{shot.action}"
@@ -40,6 +41,8 @@ def _shot_prompt(script: Script, shot) -> str:
     if shot.video_prompt and shot.video_prompt not in base:
         parts.append(shot.video_prompt)
     parts.append("画面稳定，主体一致，无镜头切换")
+    if negative:
+        parts.append(f"避免出现：{negative}")
     return _sanitize("，".join(p.strip("，。 ") for p in parts if p.strip()))
 
 
@@ -51,24 +54,32 @@ def _frame_count(seconds: float, fps: int) -> int:
 
 def modelscope_records(script: Script, fps: int = DEFAULT_FPS, max_seconds: float = MAX_SECONDS) -> list[dict]:
     records: list[dict] = []
+    prev_shot = ""
     for index, shot in enumerate(script.shots, start=1):
         duration = float(shot.duration)
+        negative = shot.negative_prompt or DEFAULT_NEGATIVE
         record = {
             "index": index,
             "shot_id": shot.id,
+            "tab": "图生视频" if prev_shot else "文生视频",
             "duration": round(duration, 2),
             "frame_count": _frame_count(duration, fps),
             "needs_split": duration > max_seconds,
             "aspect_ratio": script.meta.aspect_ratio,
             "resolution": RESOLUTION_MAP.get(script.meta.aspect_ratio, "1280×720"),
-            "model_hint": "通义万相 · 文生视频" if index == 1 else "通义万相 · 文生视频 / 图生视频（可用上一镜尾帧）",
-            "prompt": _shot_prompt(script, shot),
-            "negative_prompt": shot.negative_prompt or DEFAULT_NEGATIVE,
+            "model_hint": "通义万相 · 文生视频" if index == 1 else "通义万相 · 图生视频",
+            "prompt": _shot_prompt(script, shot, negative),
+            "negative_prompt": negative,
+            "image_prompt": shot.image_prompt.zh,
+            "first_frame": prev_shot,
+            "prompt_enhance": False,
+            "estimated_credits": 34,
             "dialogue": shot.dialogue_text(),
             "subtitle": shot.subtitle,
             "camera": CAMERA_ZH.get(shot.camera, shot.camera),
         }
         records.append(record)
+        prev_shot = shot.id
     return records
 
 
