@@ -432,8 +432,13 @@ python -m aivscript convert script.md  --to json
 
 | 输出字段 | 来源 | 规则 |
 | --- | --- | --- |
-| `prompt` | `image_prompt.zh` + `video_prompt` | 每个镜头只输出一条提示词；拼接后补「画面稳定，主体一致，无镜头切换」；运镜代码转中文；合并重复逗号 |
-| `negative_prompt` | `negative_prompt` | 为空时使用默认负向词 |
+| `prompt` | `image_prompt.zh` + `video_prompt` | 每个镜头只输出一条提示词；拼接后补「画面稳定，主体一致，无镜头切换」与「避免出现：…」；运镜代码转中文 |
+| `negative_prompt` | `negative_prompt` | 为空时使用默认负向词；页面无独立负向框，故同时并入 `prompt` 的「避免出现」 |
+| `tab` | 镜头序号 | 第 1 镜 `文生视频`，其后 `图生视频` |
+| `first_frame` | 上一镜 `shot_id` | 图生视频的首帧来源，空表示文生视频 |
+| `prompt_enhance` | 固定 `false` | 关闭提示词增强，避免改写与跨镜漂移 |
+| `estimated_credits` | 固定 `34` | 页面「预计消耗魔搭值」参考 |
+| `image_prompt` | `image_prompt.zh` | 无尾帧时用于「图片生成」产出首帧 |
 | `duration` | `duration` | 原样保留，`> 5s` 标记 `needs_split=true` |
 | `frame_count` | `duration` × `fps` | 按 4n+1 帧计算，默认 16fps |
 | `resolution` | `meta.aspect_ratio` | 16:9→1280×720，9:16→720×1280，4:3→1024×768，2.35:1→1280×544 |
